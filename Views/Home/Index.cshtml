@@ -8,7 +8,15 @@
     <p>This Web app build for ASP.NET Core Identity Service, "CMS" (Content Managment System).</p>
 </div>
 <hr />
-<div>
-    <a class="btn btn-primary" asp-action="Assignment" >Assignment</a>
-    <span><a class="btn btn-primary ml-1" asp-action="TestPage">Test Page</a></span>
+<div class="row">
+    <div class="col-4">
+        <a class="btn btn-primary font-weight-bold" asp-action="Assignment">Assignment</a>
+        <a class="btn btn-primary ml-1 font-weight-bold" asp-action="TestPage">Test Page</a>
+    </div>
+    
+    
+    <div class="col-4">
+        <a class="btn btn-warning font-weight-bold" asp-controller="Administration" asp-action="CreateRole">Create Role</a>
+        <a class="btn btn-warning ml-1 font-weight-bold" asp-controller="Administration" asp-action="RoleList">Roles List</a>
+    </div>
 </div>
