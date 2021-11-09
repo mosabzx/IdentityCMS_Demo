@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31402.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityCMS_Demo", "IdentityCMS_Demo.csproj", "{FCA3F156-AA7A-4C41-AFED-2CD8199E2AB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCA3F156-AA7A-4C41-AFED-2CD8199E2AB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCA3F156-AA7A-4C41-AFED-2CD8199E2AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCA3F156-AA7A-4C41-AFED-2CD8199E2AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCA3F156-AA7A-4C41-AFED-2CD8199E2AB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7EE1BCE-B9FC-49BC-8E8E-6D234D9E554B}
+	EndGlobalSection
+EndGlobal
