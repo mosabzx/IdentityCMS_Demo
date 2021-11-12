@@ -7,7 +7,9 @@
     <title>@ViewData["Title"] - IdentityCMS_Demo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/CustomCSS.css" rel="stylesheet" />
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light badge-secondary border-bottom box-shadow mb-3">
@@ -45,14 +47,21 @@
                     </ul>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-info" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         @*<li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>*@
                         <li class="nav-item">
-                            <a class="nav-link text-warning" asp-area="" asp-controller="Account" asp-action="Index">Users</a>
+                            <a class="nav-link text-warning" asp-controller="Account" asp-action="Index">Users</a>
                         </li>
+
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-warning" asp-controller="Administration" asp-action="RoleList">Manage Roles</a>
+                            </li>
+                        }
 
                     </ul>
 

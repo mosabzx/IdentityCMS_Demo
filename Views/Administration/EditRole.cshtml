@@ -3,9 +3,9 @@
     ViewData["Title"] = "Edit Role";
 }
 
-<h1>Edit Role</h1>
+<h1>Edit <span class="text-primary">@Model.RoleName</span> Role</h1>
 
-<form class="form-group mt-3" asp-action="EditRole">
+<form class="form-group mt-3" method="post">
 
     <div class="form-group row">
         <label class="col-form-label col-sm-2" asp-for="Id"></label>
@@ -18,7 +18,7 @@
         <label class="col-sm-2 col-form-label" asp-for="RoleName"></label>
         <div class="col-sm-10">
             <input asp-for="RoleName" class="form-control" />
-            <span asp-validation-for="Id" class="text-danger"></span>
+            <span asp-validation-for="RoleName" class="text-danger"></span>
         </div>
         
     </div>
@@ -36,7 +36,7 @@
 </form>
 <div class="card">
     <div class="card-header">
-        <h1>Users in <span class="text-info">@Model.RoleName</span> role</h1>
+        <h2>Users in <span class="text-primary">@Model.RoleName</span> role</h2>
     </div>
 
     <div class="card-body">
@@ -53,12 +53,11 @@
         }
 
         @*<p class="card-text">Some example text. Some example text.</p>*@
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
+        @*<a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>*@
     </div>
     <div class="card-footer">
-        <a href="#" class="btn btn-primary">Add User</a>
-        <a href="#" class="btn btn-primary">Remove User</a>
+        <a asp-action="EditUsersInRole" asp-route-roleId="@Model.Id" class="btn btn-primary">Add or Remove User</a>
     </div>
 </div>
 

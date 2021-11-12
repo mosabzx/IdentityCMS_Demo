@@ -10,6 +10,7 @@ namespace IdentityCMS_Demo.ViewModels
     {
         public EditRoleViewModel()
         {
+            //initialize the users property list to avoid throwing exception error while executing in UI.
             Users = new List<string>();
         }
         public string Id { get; set; }

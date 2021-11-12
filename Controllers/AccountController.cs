@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace IdentityCMS_Demo.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class AccountController : Controller
     {
         
