@@ -23,13 +23,13 @@
                     @*<partial name="_LoginPartial" />*@
                     <ul class="navbar-nav">
                         @if (signInManager.IsSignedIn(User))
-                        {
+                        { 
                             <li class="nav-item">
-                                <div class="nav-link btn btn-link text-warning py-0"> Welcome!    @User.Identity.Name</div>
+                                <div class="nav-link btn btn-link text-warning py-0 font-weight-bold"><span class="mr-2 text-info">Welcome! </span>@User.Identity.Name</div>
                             </li>
-                            <li>
+                            <li >
                                 <form asp-controller="Account" asp-action="Logout">
-                                    <button type="submit" class="nav-link text-info font-weight-bold btn btn-link py-0" style="width:auto">Logout</button>
+                                    <button type="submit" class="nav-link text-info font-weight-bold  btn btn-link py-0" style="width:auto">Logout</button>
                                 </form>
                             </li>
 
@@ -53,18 +53,27 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>*@
                         <li class="nav-item">
-                            <a class="nav-link text-warning" asp-controller="Account" asp-action="Index">Users</a>
+                            <a class="nav-link font-weight-bold text-primary" asp-controller="Administration" asp-action="UsersList">Users</a>
                         </li>
 
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-warning" asp-controller="Administration" asp-action="RoleList">Manage Roles</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-warning" id="NavBarDropDownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-controller="Administration" asp-action="RoleList">Manage</a>
+                                <div class="dropdown-menu" aria-labelledby="NavBarDropDownMenuLink">
+                                    <a class="dropdown-item" asp-controller="Administration" asp-action="UsersList">
+                                        Users
+                                    </a>
+                                    <a class="dropdown-item" asp-controller="Administration" asp-action="RoleList">
+                                        Roles
+                                    </a>
+
+                                </div>
                             </li>
                         }
 
                     </ul>
-
+                    
                 </div>
             </div>
         </nav>
@@ -77,7 +86,7 @@
 
     <footer class="border-top footer text-muted bg-dark">
         <div class="container text-white-50">
-            &copy; 2021 - Mosab Al Sherawy - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - Mosab Al Sherawy - <a class="text-danger" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

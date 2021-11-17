@@ -22,6 +22,78 @@ namespace IdentityCMS_Demo.Controllers
             this.userManager = userManager;
         }
 
+
+        [HttpGet]
+        public IActionResult UsersList()
+        {
+            var users = userManager.Users;
+            return View(users);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string Id)
+        {
+            var user = await userManager.FindByIdAsync(Id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {Id} can not be found";
+                return View("NotFound");
+            }
+            var userClaims = await userManager.GetClaimsAsync(user);
+            var userRoles = await userManager.GetRolesAsync(user);
+
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                Name = user.UserName,
+                Email = user.Email,
+                City = user.City,
+                Country = user.Country,
+                Claims = userClaims.Select(c => c.Value).ToList(),
+                Roles = userRoles.ToList()
+               
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            var user = await userManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {model.Id} can not be found";
+                return View("NotFound");
+            }
+            else
+            {
+                user.Id = model.Id;
+                user.UserName = model.Name;
+                user.Email = model.Email;
+                user.City = model.City;
+                user.Country = model.Country;
+
+                var result = await userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("UsersList");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            
+            
+            return View(model);
+
+        }
+
+
+
+
+
         [HttpGet]
         public IActionResult RoleList()
         {
@@ -32,7 +104,11 @@ namespace IdentityCMS_Demo.Controllers
 
 
 
+
+
+        
         [HttpGet]
+        [Authorize(Roles = "Super Admin")]
         public IActionResult CreateRole()
         {
             return View();
@@ -235,7 +311,11 @@ namespace IdentityCMS_Demo.Controllers
         }
 
 
+        //public IActionResult AccessDenied()
+        //{
 
+        //    return View();
+        //}
 
 
 
