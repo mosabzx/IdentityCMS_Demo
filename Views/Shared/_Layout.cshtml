@@ -23,11 +23,11 @@
                     @*<partial name="_LoginPartial" />*@
                     <ul class="navbar-nav">
                         @if (signInManager.IsSignedIn(User))
-                        { 
+                        {
                             <li class="nav-item">
                                 <div class="nav-link btn btn-link text-warning py-0 font-weight-bold"><span class="mr-2 text-info">Welcome! </span>@User.Identity.Name</div>
                             </li>
-                            <li >
+                            <li>
                                 <form asp-controller="Account" asp-action="Logout">
                                     <button type="submit" class="nav-link text-info font-weight-bold  btn btn-link py-0" style="width:auto">Logout</button>
                                 </form>
@@ -47,19 +47,19 @@
                     </ul>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-info" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-info font-weight-bold"  asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         @*<li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>*@
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link font-weight-bold text-primary" asp-controller="Administration" asp-action="UsersList">Users</a>
-                        </li>
+                        </li>*@
 
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-warning" id="NavBarDropDownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-controller="Administration" asp-action="RoleList">Manage</a>
+                                <a class="nav-link dropdown-toggle text-warning font-weight-bold" id="NavBarDropDownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-controller="Administration" asp-action="RoleList">Manage</a>
                                 <div class="dropdown-menu" aria-labelledby="NavBarDropDownMenuLink">
                                     <a class="dropdown-item" asp-controller="Administration" asp-action="UsersList">
                                         Users
@@ -73,7 +73,7 @@
                         }
 
                     </ul>
-                    
+
                 </div>
             </div>
         </nav>
@@ -92,6 +92,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    @if (IsSectionDefined("Scripts"))
+    {
+        @RenderSection("Scripts", required: true)
+    }
+
 </body>
 </html>

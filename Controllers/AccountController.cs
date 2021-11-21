@@ -24,11 +24,7 @@ namespace IdentityCMS_Demo.Controllers
             this.userManager = userManager;
         }
         
-        //public IActionResult UsersList()
-        //{
-        //    var user = userManager.Users;
-        //    return View(user);
-        //}
+        
 
         [HttpGet]
         [AllowAnonymous]

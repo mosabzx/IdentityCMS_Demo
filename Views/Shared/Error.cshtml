@@ -2,9 +2,18 @@
 @{
     ViewData["Title"] = "Error";
 }
+@if (ViewBag.ErrorTitle = null)
+{
+    <h1 class="text-danger">Error.</h1>
+    <h2 class="text-danger">An error occurred while processing your request.</h2>
+}
+else
+{
+    <h1 class="text-danger">@ViewBag.ErrorTitle</h1>
+    <h6 class="text-danger">@ViewBag.ErrorMessage</h6>
+}
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+
 
 @if (Model.ShowRequestId)
 {

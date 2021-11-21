@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<ApplicationUser>
-@{  
+@{
     ViewData["Title"] = "Users List";
 }
 
-<h1>Users List</h1>
+<h1>Users List (<span>@ViewBag.UsersCount</span>)</h1>
 <hr />
 
 <div>
@@ -23,8 +23,24 @@
                 </div>
                 @*<p class="card-text">Some example text</p>*@
                 <div class="card-footer">
-                    <a class="card-link btn btn-primary" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">Edit</a>
-                    <a class="card-link btn btn-danger" asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@user.Id">Delete</a>
+                    <form asp-action="DeleteUser" method="post" asp-route-Id="@user.Id">
+                        <a class="btn btn-primary" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">Edit</a>
+
+                        @*Delete confirmation by popup window browser: *@
+                        <!--<button type="submit" class="card-link btn btn-danger" onclick="return confirm('Are you sure you want to delete user : @user.UserName')">Delete</button>-->
+
+                        @*Delete Confirmation by spaning message with Yes or No button using JavaScript*@
+                        <span id="confirmDeleteSpan_@user.Id" style="display:none">
+                            <span class="text-warning">Are you sure you want to delete @user.UserName ?</span>
+                            <button type="submit" class="btn btn-danger">Yes</button>
+                            <button type="button"  class="btn btn-primary" onclick="ConfirmDelete('@user.Id ', false)">No</button>
+                        </span>
+                        <span id="deleteSpan_@user.Id">
+                            <button type="button" class="btn btn-danger" onclick="ConfirmDelete('@user.Id',true)">Delete</button>
+                        </span>
+
+                    </form>
+
                 </div>
             </div>
         }
@@ -49,3 +65,13 @@
         </div>
     }
 </div>
+
+@*the script also working fine if add it like this :
+<script src="~/js/CustomJavaScript.js"></script>*@
+
+@section Scripts {
+        <script src="~/js/CustomJavaScript.js"></script>
+    }
+
+
+

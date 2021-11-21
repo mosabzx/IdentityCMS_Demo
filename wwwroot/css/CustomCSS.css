@@ -30,3 +30,8 @@
 .mediumSeaGreen {
     color: MediumSeaGreen;
 }
+
+.delete-button {
+    color: white !important;
+    cursor: pointer;
+}
