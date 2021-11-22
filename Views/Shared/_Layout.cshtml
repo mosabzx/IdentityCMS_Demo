@@ -47,24 +47,24 @@
                     </ul>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-info font-weight-bold"  asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-info font-weight-bold" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         @*<li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>*@
                         @*<li class="nav-item">
-                            <a class="nav-link font-weight-bold text-primary" asp-controller="Administration" asp-action="UsersList">Users</a>
-                        </li>*@
+                                <a class="nav-link font-weight-bold text-primary" asp-controller="Administration" asp-action="UsersList">Users</a>
+                            </li>*@
 
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-warning font-weight-bold" id="NavBarDropDownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-controller="Administration" asp-action="RoleList">Manage</a>
+                                <a class="nav-link dropdown-toggle text-warning font-weight-bold" id="NavBarDropDownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-controller="Administration" asp-action="RolesList">Manage</a>
                                 <div class="dropdown-menu" aria-labelledby="NavBarDropDownMenuLink">
                                     <a class="dropdown-item" asp-controller="Administration" asp-action="UsersList">
                                         Users
                                     </a>
-                                    <a class="dropdown-item" asp-controller="Administration" asp-action="RoleList">
+                                    <a class="dropdown-item" asp-controller="Administration" asp-action="RolesList">
                                         Roles
                                     </a>
 

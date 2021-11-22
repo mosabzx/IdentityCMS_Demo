@@ -232,7 +232,7 @@ namespace IdentityCMS_Demo.Controllers
                 IdentityResult result = await roleManager.CreateAsync(identityRole);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("RoleList", "Administration");
+                    return RedirectToAction("RolesList", "Administration");
                 }
                 foreach (IdentityError error in result.Errors)
                 {
@@ -287,7 +287,7 @@ namespace IdentityCMS_Demo.Controllers
                     var result = await roleManager.UpdateAsync(role);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("RoleList");
+                        return RedirectToAction("RolesList");
                     }
                     else
                     {
@@ -323,7 +323,7 @@ namespace IdentityCMS_Demo.Controllers
                 var result = await roleManager.DeleteAsync(role);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("RoleList");
+                    return RedirectToAction("RolesList");
                 }
 
 
@@ -332,7 +332,7 @@ namespace IdentityCMS_Demo.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
 
-                return View("RoleList");
+                return View("RolesList");
 
 
 
