@@ -89,6 +89,7 @@ namespace IdentityCMS_Demo.Controllers
                     if (result.Succeeded)
                     {
                         // Or adding && Url.IsLocalUrl(returnUrl) in If statment.
+                        //Or use return LocalRedirect(the return url parameter)
                         if (!string.IsNullOrEmpty(returnUrl))
                         {
                             return LocalRedirect(returnUrl);

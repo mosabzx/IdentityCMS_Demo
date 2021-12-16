@@ -85,9 +85,22 @@
     </div>
 
     <footer class="border-top footer text-muted bg-dark">
-        <div class="container text-white-50">
-            &copy; 2021 - Mosab Al Sherawy - <a class="text-danger" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container">
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="text-white-50">
+                        &copy; 2021 - Mosab Al Sherawy - <a class="text-primary" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <a class="btn btn-warning text-white" asp-controller="home" asp-action="index">Home</a>
+                </div>
+
+            </div>
         </div>
+
+
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

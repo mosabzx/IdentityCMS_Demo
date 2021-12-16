@@ -31,7 +31,7 @@
 
                         @*Delete Confirmation by spaning message with Yes or No button using JavaScript*@
                         <span id="confirmDeleteSpan_@user.Id" style="display:none">
-                            <span class="text-warning">Are you sure you want to delete @user.UserName ?</span>
+                            <span class="text-danger">Are you sure you want to delete @user.UserName ?</span>
                             <button type="submit" class="btn btn-danger">Yes</button>
                             <button type="button"  class="btn btn-primary" onclick="ConfirmDelete('@user.Id ', false)">No</button>
                         </span>

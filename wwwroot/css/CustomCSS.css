@@ -35,3 +35,9 @@
     color: white !important;
     cursor: pointer;
 }
+
+.btn-tomato {
+    color: #fff;
+    background-color: tomato;
+    border-color: tomato;
+}
