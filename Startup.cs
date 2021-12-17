@@ -3,6 +3,7 @@ using IdentityCMS_Demo.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -30,10 +31,6 @@ namespace IdentityCMS_Demo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Add a Calim policy
-            services.AddAuthorization(options =>
-            options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role").RequireClaim("Create Role")));
-
             //Add connection string for SQL Server.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -46,8 +43,46 @@ namespace IdentityCMS_Demo
                 //options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequiredLength = 4;
                 //false no need Such as[ @ ! # $ ] , etc...
-                options.Password.RequireNonAlphanumeric = false; 
+                options.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+            //Add Policies.
+            services.AddAuthorization(options =>
+            {
+                //Add a Calim policy for delete.
+                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+
+                //Add a Calim policy for delete and create.
+                options.AddPolicy("DeleteCreateRolePolicy", policy => policy.RequireClaim("Delete Role").RequireClaim("Create Role"));
+
+                //Add a Claim for Edit policy.
+                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
+
+                //Add a Claim for Create policy.
+                options.AddPolicy("CreateRolePolicy", policy => policy.RequireClaim("Create Role"));
+
+
+                //Add Role policy for Admin Role./In ASP.Net Core The Role is a Claim with type Role so it can added as policy.
+                options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));
+
+
+            });
+
+
+            //Change the AccessDenied from defult Path(Account/AccessDenied) to Path(Administration/AccessDenied) or any desired path.
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/Administration/AccessDenied");
+            });
+
+
+
+
+
+
+
+
 
 
 
@@ -58,14 +93,18 @@ namespace IdentityCMS_Demo
             //    option.Password.RequireNonAlphanumeric = false;
             //});
 
-            ////In StartUp Class/ConfigureServices Metohd
-            ////Add global policy for all application( All contreollers and Actions).
-            //services.AddMvc( option => {
+
+
+            /*//In StartUp Class/ConfigureServices Metohd
+            Add global policy for all application( All contreollers and Actions).*/
+
+            //services.AddMvc(option =>
+            //{
             //    var policy = new AuthorizationPolicyBuilder()
             //    .RequireAuthenticatedUser().Build();
             //    option.Filters.Add(new AuthorizeFilter(policy));
             //});
-            
+
 
             services.AddControllersWithViews();
             services.AddRazorPages();

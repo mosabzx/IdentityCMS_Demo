@@ -11,7 +11,13 @@ using System.Threading.Tasks;
 
 namespace IdentityCMS_Demo.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //Authorize the controller by using Policy parameter.
+    [Authorize(Policy = "AdminRolePolicy")]
+
+    //OR
+
+    //Authorize the controller by using Roles parameter.
+    //[Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -115,7 +121,7 @@ namespace IdentityCMS_Demo.Controllers
                         RoleId = role.Id,
                         RoleName = role.Name
                     };
-                    if (await userManager.IsInRoleAsync(user,role.Name))
+                    if (await userManager.IsInRoleAsync(user, role.Name))
                     {
                         userRolesViewModel.IsSelected = true;
                     }
@@ -130,7 +136,7 @@ namespace IdentityCMS_Demo.Controllers
 
             }
 
-            
+
         }
 
         [HttpPost]
@@ -158,9 +164,9 @@ namespace IdentityCMS_Demo.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("EditUser", new {Id = userId });
+            return RedirectToAction("EditUser", new { Id = userId });
 
-            
+
         }
 
 
@@ -181,7 +187,7 @@ namespace IdentityCMS_Demo.Controllers
             var model = new UserClaimsViewModel
             {
                 userId = userId,
-                
+
             };
 
             foreach (Claim claim in ClaimsStore.AllClaims)
@@ -192,7 +198,7 @@ namespace IdentityCMS_Demo.Controllers
                 };
                 /*If the user has the claim, set the IsSelected property to true, so the checkbox
                  next to claim is checked in the UI (User Interface)*/
-                if (existingUserClaims.Any(c=> c.Type == claim.Type))
+                if (existingUserClaims.Any(c => c.Type == claim.Type))
                 {
                     userClaim.IsSelected = true;
                 }
@@ -213,16 +219,16 @@ namespace IdentityCMS_Demo.Controllers
             }
 
             var claims = await userManager.GetClaimsAsync(user);
-            var result = await userManager.RemoveClaimsAsync(user,claims);
+            var result = await userManager.RemoveClaimsAsync(user, claims);
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("","Cannot remove user existing claims");
+                ModelState.AddModelError("", "Cannot remove user existing claims");
                 return View(model);
             }
 
             result = await userManager.AddClaimsAsync(user,
                 model.Claims.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
-            
+
             if (!result.Succeeded)
             {
                 ModelState.AddModelError("", "Cannot add user selected claims");
@@ -293,11 +299,14 @@ namespace IdentityCMS_Demo.Controllers
 
         [HttpGet]
         //[Authorize(Roles = "Super Admin")]
+        [Authorize(Policy = "CreateRolePolicy")]
         public IActionResult CreateRole()
         {
             return View();
         }
+
         [HttpPost]
+        [Authorize(Policy = "CreateRolePolicy")]
         public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -322,6 +331,7 @@ namespace IdentityCMS_Demo.Controllers
 
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string Id)
         {
             var role = await roleManager.FindByIdAsync(Id);
@@ -345,6 +355,7 @@ namespace IdentityCMS_Demo.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -512,12 +523,16 @@ namespace IdentityCMS_Demo.Controllers
             return RedirectToAction("EditRole", new { Id = roleId });
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
 
-        //public IActionResult AccessDenied()
-        //{
+            return View();
+        }
 
-        //    return View();
-        //}
+        
+
 
 
 
