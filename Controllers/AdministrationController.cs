@@ -292,7 +292,7 @@ namespace IdentityCMS_Demo.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "Super Admin")]
+        //[Authorize(Roles = "Super Admin")]
         public IActionResult CreateRole()
         {
             return View();
@@ -382,6 +382,7 @@ namespace IdentityCMS_Demo.Controllers
         }
 
         [HttpPost]
+        [Authorize (Policy ="DeleteRolePolicy")]
         public async Task<IActionResult> DeleteRole(string Id)
         {
             var role = await roleManager.FindByIdAsync(Id);

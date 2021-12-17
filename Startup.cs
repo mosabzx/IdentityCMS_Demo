@@ -30,11 +30,17 @@ namespace IdentityCMS_Demo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Add a Calim policy
+            services.AddAuthorization(options =>
+            options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role").RequireClaim("Create Role")));
 
+            //Add connection string for SQL Server.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SqlCon")));
 
+
+            //Add Identity to the project.
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 //options.SignIn.RequireConfirmedAccount = true;
