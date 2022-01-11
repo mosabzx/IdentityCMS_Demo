@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IdentityCMS_Demo.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -26,6 +26,8 @@ namespace IdentityCMS_Demo.Controllers
             return View();
         }
 
+        //[Authorize(Roles ="Admin")]
+        
         public IActionResult Assignment()
         {
             return View();

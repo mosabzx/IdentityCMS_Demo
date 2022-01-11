@@ -24,10 +24,7 @@ namespace IdentityCMS_Demo.Controllers
             this.userManager = userManager;
         }
         
-        public IActionResult Index()
-        {
-            return View();
-        }
+        
 
         [HttpGet]
         [AllowAnonymous]
@@ -47,6 +44,10 @@ namespace IdentityCMS_Demo.Controllers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("UsersList","Administration");
+                    }
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("index", "home");
                 }
@@ -62,9 +63,9 @@ namespace IdentityCMS_Demo.Controllers
             }
 
 
-
             return View(model);
         }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
@@ -88,6 +89,7 @@ namespace IdentityCMS_Demo.Controllers
                     if (result.Succeeded)
                     {
                         // Or adding && Url.IsLocalUrl(returnUrl) in If statment.
+                        //Or use return LocalRedirect(the return url parameter)
                         if (!string.IsNullOrEmpty(returnUrl))
                         {
                             return LocalRedirect(returnUrl);
@@ -125,7 +127,7 @@ namespace IdentityCMS_Demo.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        
 
 
     }
