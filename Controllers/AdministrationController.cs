@@ -11,13 +11,20 @@ using System.Threading.Tasks;
 
 namespace IdentityCMS_Demo.Controllers
 {
-    //Authorize the controller by using Policy parameter.
-    [Authorize(Policy = "AdminRolePolicy")]
+    /*  Authorize the controller by using Policy parameter. */
+    //[Authorize(Policy = "AdminRolePolicy")]
 
     //OR
 
-    //Authorize the controller by using Roles parameter.
+    /* Authorize the controller by using many Roles parameters. */
+    //[Authorize(Roles = "Admin,Manager")]
+
+    //OR
+
+    /* Authorize the controller by using one Role parameter. */
     //[Authorize(Roles = "Admin")]
+
+
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -41,6 +48,7 @@ namespace IdentityCMS_Demo.Controllers
 
 
         [HttpGet]
+
         public async Task<IActionResult> EditUser(string Id)
         {
             var user = await userManager.FindByIdAsync(Id);
@@ -60,7 +68,7 @@ namespace IdentityCMS_Demo.Controllers
                 Email = user.Email,
                 City = user.City,
                 Country = user.Country,
-                Claims = userClaims.Select(c => c.Value).ToList(),
+                Claims = userClaims.Select(c => c.Type + " : " + c.Value).ToList(),
                 Roles = userRoles.ToList()
 
             };
@@ -198,7 +206,7 @@ namespace IdentityCMS_Demo.Controllers
                 };
                 /*If the user has the claim, set the IsSelected property to true, so the checkbox
                  next to claim is checked in the UI (User Interface)*/
-                if (existingUserClaims.Any(c => c.Type == claim.Type))
+                if (existingUserClaims.Any(c => c.Type == claim.Type && c.Value == "true"))
                 {
                     userClaim.IsSelected = true;
                 }
@@ -226,8 +234,13 @@ namespace IdentityCMS_Demo.Controllers
                 return View(model);
             }
 
+            //Adding claim value as claim type.
+            /*result = await userManager.AddClaimsAsync(user,
+                model.Claims.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));*/
+
+            //Adding Claim value as true or false based on IsSelected property.
             result = await userManager.AddClaimsAsync(user,
-                model.Claims.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
+                model.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")));
 
             if (!result.Succeeded)
             {
@@ -393,7 +406,7 @@ namespace IdentityCMS_Demo.Controllers
         }
 
         [HttpPost]
-        [Authorize (Policy ="DeleteRolePolicy")]
+        [Authorize(Policy = "DeleteRolePolicy")]
         public async Task<IActionResult> DeleteRole(string Id)
         {
             var role = await roleManager.FindByIdAsync(Id);
@@ -531,7 +544,7 @@ namespace IdentityCMS_Demo.Controllers
             return View();
         }
 
-        
+
 
 
 
@@ -540,4 +553,8 @@ namespace IdentityCMS_Demo.Controllers
 
 
     }
+
+
 }
+
+

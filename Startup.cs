@@ -51,20 +51,22 @@ namespace IdentityCMS_Demo
             services.AddAuthorization(options =>
             {
                 //Add a Calim policy for delete.
-                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role", "true"));
 
                 //Add a Calim policy for delete and create.
                 options.AddPolicy("DeleteCreateRolePolicy", policy => policy.RequireClaim("Delete Role").RequireClaim("Create Role"));
 
                 //Add a Claim for Edit policy.
-                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
+                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role" , "true"));
 
                 //Add a Claim for Create policy.
-                options.AddPolicy("CreateRolePolicy", policy => policy.RequireClaim("Create Role"));
+                options.AddPolicy("CreateRolePolicy", policy => policy.RequireClaim("Create Role", "true"));
 
 
                 //Add Role policy for Admin Role./In ASP.Net Core The Role is a Claim with type Role so it can added as policy.
                 options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));
+
+                //Add Custom authoriztion policy using func.
 
 
             });
@@ -75,12 +77,6 @@ namespace IdentityCMS_Demo
             {
                 options.AccessDeniedPath = new PathString("/Administration/AccessDenied");
             });
-
-
-
-
-
-
 
 
 

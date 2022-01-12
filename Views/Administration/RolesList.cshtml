@@ -6,10 +6,14 @@
     ViewBag.Title = "All Roles";
 }
 
-<h1>All Roles (<span>@ViewBag.RolesCount</span>)</h1> 
+<h1>All Roles (<span>@ViewBag.RolesCount</span>)</h1>
 @if (Model.Any())
 {
-    <a class="btn btn-success mb-3" asp-controller="Administration" asp-action="CreateRole">Add new role</a>
+    @if ((await authorizationService.AuthorizeAsync(User, "CreateRolePolicy")).Succeeded)
+    {
+        <a class="btn btn-success mb-3" asp-controller="Administration" asp-action="CreateRole">Add new role</a>
+    }
+
 
     foreach (var role in Model)
     {
