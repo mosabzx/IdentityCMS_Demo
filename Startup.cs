@@ -50,23 +50,44 @@ namespace IdentityCMS_Demo
             //Add Policies.
             services.AddAuthorization(options =>
             {
-                //Add a Calim policy for delete.
+                /* Claim value could be many as long as the Claim parameter accept array*/
+
+                //Add a Calim policy for delete with (Claim type and Claim Value).
                 options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role", "true"));
 
-                //Add a Calim policy for delete and create.
-                options.AddPolicy("DeleteCreateRolePolicy", policy => policy.RequireClaim("Delete Role").RequireClaim("Create Role"));
 
-                //Add a Claim for Edit policy.
-                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role" , "true"));
+                //Add a Calim policy with two claims types with values for create and delete claims.
+                options.AddPolicy("DeleteCreateRolePolicy", policy => policy.RequireClaim("Delete Role", "true").RequireClaim("Create Role", "true"));
 
-                //Add a Claim for Create policy.
+
+                ///*Add a Claim for Edit policy with (Claim type and Claim Value).*/
+                //options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role" , "true"));
+
+
+                //Add a Claim for Create policy with (Claim type and Claim Value).
                 options.AddPolicy("CreateRolePolicy", policy => policy.RequireClaim("Create Role", "true"));
 
 
-                //Add Role policy for Admin Role./In ASP.Net Core The Role is a Claim with type Role so it can added as policy.
+                ///*Add Role policy for Admin Role./In ASP.Net Core The Role is a Claim with type Role so it can added as policy.*/
                 options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));
 
-                //Add Custom authoriztion policy using func.
+
+                ///* Add Custom policy with requirements of Claim and Role together.*/
+                //options.AddPolicy("EditRolePolicy", policy => policy.RequireRole("Admin")
+                //.RequireClaim("Edit Role", "true")
+                //.RequireRole("Super Admin"));
+
+
+                /*Add Custom policy with either requirements of Claim and Role together or by one Role by using Func
+                 and RequierAssertion method. As an assertion method give the result as boolean*/
+                options.AddPolicy("EditRolePolicy",
+                    policy => policy.RequireAssertion(context => 
+                    context.User.IsInRole("Admin") && 
+                    context.User.HasClaim(claim => claim.Type == "Edit Role" && claim.Value == "true")||
+                    context.User.IsInRole("Super Admin")));
+
+
+
 
 
             });
