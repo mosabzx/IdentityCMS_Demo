@@ -15,7 +15,7 @@
         <a class="btn btn-primary ml-1 " asp-action="TestPage">Test Page</a>
     </div>
 
-    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin") && User.IsInRole("Super Admin"))
+    @if (signInManager.IsSignedIn(User) @*&& User.IsInRole("Admin") || User.IsInRole("Manager")*@)
     {
         <div class="col-8">
 
