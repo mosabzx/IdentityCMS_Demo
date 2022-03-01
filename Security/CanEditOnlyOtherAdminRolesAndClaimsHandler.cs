@@ -40,6 +40,11 @@ namespace IdentityCMS_Demo.Security
             {
                 context.Succeed(requirement);
             }
+            //else
+            //{
+            //    /*Use it when the policy not fulfilled and need to return explicit failure.*/
+            //    context.Fail();
+            //}
 
             return Task.CompletedTask; // Task.CompledtedTask meaning the access not authorized.
 

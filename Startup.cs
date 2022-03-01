@@ -47,15 +47,15 @@ namespace IdentityCMS_Demo
                 options.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-           
+
 
             //Adding Session (To use Cockies).
             //services.AddSession();
             //option =>
             //option.IdleTimeout = TimeSpan.FromMinutes(2));
 
-            
 
+            
 
 
             //Add Policies.
@@ -106,16 +106,20 @@ namespace IdentityCMS_Demo
                    policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequierment()));
 
 
+                /*If do not want or stop the rest of custom handler to be called when a failure is returned,
+                 Set the InvokeHandlerAfterFailure property to false (The defualt is true).*/
+                //options.InvokeHandlersAfterFailure = false;
+
 
 
             });
-
 
             /*Registering the Custom Authorization Handler To active the custom authorization requierment*/
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
 
             /*Registering The other Authoraization Handler*/
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
+
 
 
             //Change the AccessDenied from defult Path(Account/AccessDenied) to Path(Administration/AccessDenied) or any desired path.
