@@ -1,5 +1,6 @@
 using IdentityCMS_Demo.Data;
 using IdentityCMS_Demo.Models;
+using IdentityCMS_Demo.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,6 +47,16 @@ namespace IdentityCMS_Demo
                 options.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
+           
+
+            //Adding Session (To use Cockies).
+            services.AddSession();
+            //option =>
+            //option.IdleTimeout = TimeSpan.FromMinutes(2));
+
+            
+
+
 
             //Add Policies.
             services.AddAuthorization(options =>
@@ -78,19 +89,28 @@ namespace IdentityCMS_Demo
                 //.RequireRole("Super Admin"));
 
 
-                /*Add Custom policy with either requirements of Claim and Role together or by one Role by using Func
-                 and RequierAssertion method. As an assertion method give the result as boolean*/
-                options.AddPolicy("EditRolePolicy",
-                    policy => policy.RequireAssertion(context => 
-                    context.User.IsInRole("Admin") && 
-                    context.User.HasClaim(claim => claim.Type == "Edit Role" && claim.Value == "true")||
-                    context.User.IsInRole("Super Admin")));
+                /*Add Custom policy with either requirements of Claim with value and Role together or by one Role by using Func and RequierAssertion method. As an assertion method give the result as boolean*/
+                //options.AddPolicy("EditRolePolicy",
+                //    policy => policy.RequireAssertion(context => 
+                //    context.User.IsInRole("Admin") && 
+                //    context.User.HasClaim(claim => claim.Type == "Edit Role" && claim.Value == "true")||
+                //    context.User.IsInRole("Super Admin")));
 
+
+
+                /*Add Custom policy with Custom Authorization Requierment and Custom Authorization Handler*/
+                /* This custom authorization requierment prevent the logged in user has Admin role and edit role claim with true value to edit the user role But can edit other user IF not logged in.
+                 * An Admin user can manage other Admin user roles and claims but not thier own roles cand claims.*/
+                options.AddPolicy("EditRolePolicy",
+                   policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequierment()));
 
 
 
 
             });
+
+
+           
 
 
             //Change the AccessDenied from defult Path(Account/AccessDenied) to Path(Administration/AccessDenied) or any desired path.
@@ -103,7 +123,7 @@ namespace IdentityCMS_Demo
 
 
 
-            // OR the password could be configured by this way:
+            // OR the Password option could be configured by this way:
 
             //services.Configure<IdentityOptions>(option => {
             //    option.Password.RequiredLength = 4;
@@ -125,7 +145,16 @@ namespace IdentityCMS_Demo
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddHttpContextAccessor();
+            /*Registering the Custom Authorization Handler To active the custom authorization requierment*/
+            services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+
+
         }
+
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -143,7 +172,7 @@ namespace IdentityCMS_Demo
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthentication();
@@ -156,6 +185,14 @@ namespace IdentityCMS_Demo
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+
+
         }
+
+
     }
+
+
+
 }

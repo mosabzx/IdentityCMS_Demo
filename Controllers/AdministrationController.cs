@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace IdentityCMS_Demo.Controllers
 {
@@ -109,6 +110,7 @@ namespace IdentityCMS_Demo.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             ViewBag.UserId = userId;
@@ -148,6 +150,7 @@ namespace IdentityCMS_Demo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -344,7 +347,7 @@ namespace IdentityCMS_Demo.Controllers
 
 
         [HttpGet]
-        [Authorize(Policy = "EditRolePolicy")]
+        //[Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string Id)
         {
             var role = await roleManager.FindByIdAsync(Id);
@@ -368,7 +371,7 @@ namespace IdentityCMS_Demo.Controllers
             return View(model);
         }
         [HttpPost]
-        [Authorize(Policy = "EditRolePolicy")]
+        
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             if (ModelState.IsValid)
