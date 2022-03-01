@@ -24,6 +24,7 @@ namespace IdentityCMS_Demo.Security
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManageAdminRolesAndClaimsRequierment requirement)
         {
             //var authFilterContext = context.Resource as AuthorizationFilterContext; // this work in .Net core 2 till 3.0 .
+            /*For .Net COre 3.0+ must used the HttpContextAccessor.*/
             var authFilterContext = httpContextAccessor.HttpContext;
             if (authFilterContext == null)
             {

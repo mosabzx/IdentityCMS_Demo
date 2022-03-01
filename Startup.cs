@@ -50,7 +50,7 @@ namespace IdentityCMS_Demo
            
 
             //Adding Session (To use Cockies).
-            services.AddSession();
+            //services.AddSession();
             //option =>
             //option.IdleTimeout = TimeSpan.FromMinutes(2));
 
@@ -100,6 +100,7 @@ namespace IdentityCMS_Demo
 
                 /*Add Custom policy with Custom Authorization Requierment and Custom Authorization Handler*/
                 /* This custom authorization requierment prevent the logged in user has Admin role and edit role claim with true value to edit the user role But can edit other user IF not logged in.
+                 
                  * An Admin user can manage other Admin user roles and claims but not thier own roles cand claims.*/
                 options.AddPolicy("EditRolePolicy",
                    policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequierment()));
@@ -110,7 +111,11 @@ namespace IdentityCMS_Demo
             });
 
 
-           
+            /*Registering the Custom Authorization Handler To active the custom authorization requierment*/
+            services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+
+            /*Registering The other Authoraization Handler*/
+            services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 
 
             //Change the AccessDenied from defult Path(Account/AccessDenied) to Path(Administration/AccessDenied) or any desired path.
@@ -147,8 +152,10 @@ namespace IdentityCMS_Demo
             services.AddRazorPages();
 
             services.AddHttpContextAccessor();
-            /*Registering the Custom Authorization Handler To active the custom authorization requierment*/
-            services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+
+            
+
+
 
 
         }
@@ -172,7 +179,7 @@ namespace IdentityCMS_Demo
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSession();
+            //app.UseSession();
             app.UseRouting();
 
             app.UseAuthentication();
